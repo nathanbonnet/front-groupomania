@@ -17,33 +17,51 @@ var config = {
 
 var signInConfig = Object.assign({}, config, {
   name: "sign-in",
-  entry: "./src/sign-in/sign-in.js",
+  entry: "./src/page/sign-in/sign-in.js",
   output: {
-    path: path.resolve(__dirname, 'dist/js'),
+    path: path.resolve(__dirname, 'public/js'),
     filename: "sign-in.bundle.js"
   },
 });
 
 var signUpConfig = Object.assign({}, config, {
   name: "sign-up",
-  entry: "./src/sign-up/sign-up.js",
+  entry: "./src/page/sign-up/sign-up.js",
   output: {
-    path: path.resolve(__dirname, 'dist/js'),
+    path: path.resolve(__dirname, 'public/js'),
     filename: "sign-up.bundle.js"
+  },
+});
+
+var homeConfig = Object.assign({}, config, {
+  name: "home",
+  entry: "./src/page/home/home.js",
+  output: {
+    path: path.resolve(__dirname, 'public/js'),
+    filename: "home.bundle.js"
   },
 });
 
 var compteConfig = Object.assign({}, config, {
   name: "compte",
-  entry: "./src/compte/compte.js",
+  entry: "./src/page/compte/compte.js",
   output: {
-    path: path.resolve(__dirname, 'dist/js'),
+    path: path.resolve(__dirname, 'public/js'),
     filename: "compte.bundle.js"
+  },
+});
+
+var createConfig = Object.assign({}, config, {
+  name: "create",
+  entry: "./src/page/create/create.js",
+  output: {
+    path: path.resolve(__dirname, 'public/js'),
+    filename: "create.bundle.js"
   },
 });
 
 
 // Return Array of Configurations
 module.exports = [
-  signInConfig, signUpConfig, compteConfig
+  signInConfig, signUpConfig, homeConfig, compteConfig, createConfig
 ];

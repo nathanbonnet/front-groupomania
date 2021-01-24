@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import "../style.scss";
+import "../../scss/style.scss";
+import authApi, { isAuth } from "../../service/authApi";
 
   document.addEventListener("DOMContentLoaded", function() {
     let button = document.getElementById("button");
@@ -15,34 +16,17 @@ import "../style.scss";
       function checkSubmit() {
           
           if(checkEmpty(firstName) && checkEmpty(lastName) && checkEmail(email) && checkEmpty(password)) {
-              document.getElementById("button").addEventListener("click", function(event){
-                  let signUp = {
-                      firstName: firstName.value,
-                      lastName: lastName.value,
-                      email: email.value,
-                      password: password.value,
-                  }
-                  console.log(signUp)
-                  localStorage.setItem("signUp", JSON.stringify(signUp));
+                let signUp = {
+                    firstName: firstName.value,
+                    lastName: lastName.value,
+                    email: email.value,
+                    password: password.value,
+                }
 
-
-                  fetch('http://localhost:3000/users', {
-                      method: "POST",
-                      body: JSON.stringify(signUp),
-                      headers: {"Content-type": "application/json; charset=UTF-8"}
-                  })
-                  .then(response => response.json())
-                  .then(response => {
-                      console.log(response)
-                      localStorage.setItem("token", response.token);
-                      window.location.replace("home.html");
-                  }).catch(function(error) {
-                      console.log(error.response);
-                      document.body.innerHTML = '<h1 style="color:red">une erreur est survenue sur le serveur</h1>'
-                  });
-              })
-                  let button = document.getElementById("button");
-                  button.disabled = false;
+                authApi.signUp(signUp);
+                
+                let button = document.getElementById("button");
+                button.disabled = false;
               } else {
                   let button = document.getElementById("button");
                   button.disabled = true;

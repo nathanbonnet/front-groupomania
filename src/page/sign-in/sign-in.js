@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import "../style.scss";
+import "../../scss/style.scss";
+import authApi from "../../service/authApi";
 
 document.addEventListener("DOMContentLoaded", function() {
     let button = document.getElementById("button");
@@ -7,43 +8,26 @@ document.addEventListener("DOMContentLoaded", function() {
         let error = document.getElementById("error");
         event.preventDefault();
 
-        let email = document.getElementById("email");
-        let password = document.getElementById("password");
+        const email = document.getElementById("email");
+        const password = document.getElementById("password");
         checkSubmit()
 
         function checkSubmit() {
             
             if(checkEmail(email) && checkEmpty(password)) {
-                document.getElementById("button").addEventListener("click", function(event){
-                    let contact = {
-                        email: email.value,
-                        password: password.value,
-                    }
-                    console.log(contact)
-                    localStorage.setItem("contact", JSON.stringify(contact));
 
-
-                    fetch('http://localhost:3000/users/login', {
-                        method: "POST",
-                        body: JSON.stringify(contact),
-                        headers: {"Content-type": "application/json; charset=UTF-8"}
-                    })
-                    .then(response => response.json())
-                    .then(response => {
-                        console.log(response)
-                        localStorage.setItem("token", response.token);
-                        window.location.replace("home.html");
-                    }).catch(function(error) {
-                        console.log(error.response);
-                        document.body.innerHTML = '<h1 style="color:red">une erreur est survenue sur le serveur</h1>'
-                    });
+                authApi.login({
+                    email: email.value,
+                    password: password.value,
                 })
-                    let button = document.getElementById("button");
-                    button.disabled = false;
-                } else {
-                    let button = document.getElementById("button");
-                    button.disabled = true;
-                }
+
+                let button = document.getElementById("button");
+                button.disabled = false;
+
+            } else {
+                let button = document.getElementById("button");
+                button.disabled = true;
+            }
         }
 
         checkForm()
