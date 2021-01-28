@@ -3,7 +3,7 @@ import "../../scss/style.scss";
 import authApi from "../../service/authApi";
 
 document.addEventListener("DOMContentLoaded", function() {
-    let button = document.getElementById("button");
+    let button = document.getElementById("login");
     button.addEventListener("click", function(event){
         let error = document.getElementById("error");
         event.preventDefault();
@@ -13,7 +13,8 @@ document.addEventListener("DOMContentLoaded", function() {
         checkSubmit()
 
         function checkSubmit() {
-            
+
+            const button = document.getElementById("login");
             if(checkEmail(email) && checkEmpty(password)) {
 
                 authApi.login({
@@ -21,11 +22,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     password: password.value,
                 })
 
-                let button = document.getElementById("button");
                 button.disabled = false;
 
             } else {
-                let button = document.getElementById("button");
                 button.disabled = true;
             }
         }

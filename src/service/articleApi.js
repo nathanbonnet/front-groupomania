@@ -14,6 +14,21 @@ function getArticles() {
         document.body.innerHTML = '<h1 style="color:red">une erreur est survenue sur le serveur</h1>'
     });
 }
+function getArticlesByOwner() {
+    return fetch('http://localhost:3000/my_articles', {
+        method: "GET",
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": "Bearer " + token 
+        }
+    })
+    .then(response => response.json())
+    .catch(function(error) {
+        console.log(error.response);
+        document.body.innerHTML = '<h1 style="color:red">une erreur est survenue sur le serveur</h1>'
+    });
+}
+
 
 function getArticleById(id) {
     return fetch('http://localhost:3000/articles/'+id, {
@@ -42,7 +57,7 @@ function postArticle(createArticle) {
     .then(response => response.json())
     .then(response => {
         console.log(response)
-        // window.location.replace("home.html");
+        window.location.replace("home.html");
     }).catch(function(error) {
         console.log(error.response);
         document.body.innerHTML = '<h1 style="color:red">une erreur est survenue sur le serveur</h1>'
@@ -52,7 +67,10 @@ function postArticle(createArticle) {
 function deleteArticleById(id) {
     return fetch('http://localhost:3000/articles/'+id, {
         method: "DELETE",
-        headers: {"Content-type": "application/json; charset=UTF-8"}
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": "Bearer " + token 
+        }
     })
     .then(response => response.json())
     .then(response => {
@@ -84,5 +102,6 @@ export default {
     deleteArticleById,
     getArticleById,
     putArticleById,
-    postArticle
+    postArticle,
+    getArticlesByOwner
 }

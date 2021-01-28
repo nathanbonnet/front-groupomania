@@ -3,7 +3,7 @@ import "../../scss/style.scss";
 import authApi, { isAuth } from "../../service/authApi";
 
   document.addEventListener("DOMContentLoaded", function() {
-    let button = document.getElementById("button");
+    let button = document.getElementById("register");
     button.addEventListener("click", function(){
   
       let firstName = document.getElementById("firstName");
@@ -14,7 +14,7 @@ import authApi, { isAuth } from "../../service/authApi";
       checkSubmit()
 
       function checkSubmit() {
-          
+          let button = document.getElementById("register");
           if(checkEmpty(firstName) && checkEmpty(lastName) && checkEmail(email) && checkEmpty(password)) {
                 let signUp = {
                     firstName: firstName.value,
@@ -25,10 +25,8 @@ import authApi, { isAuth } from "../../service/authApi";
 
                 authApi.signUp(signUp);
                 
-                let button = document.getElementById("button");
                 button.disabled = false;
               } else {
-                  let button = document.getElementById("button");
                   button.disabled = true;
               }
       }

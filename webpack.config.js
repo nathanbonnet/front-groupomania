@@ -53,15 +53,33 @@ var compteConfig = Object.assign({}, config, {
 
 var createConfig = Object.assign({}, config, {
   name: "create",
-  entry: "./src/page/create/create.js",
+  entry: "./src/page/article/create.js",
   output: {
     path: path.resolve(__dirname, 'public/js'),
     filename: "create.bundle.js"
   },
 });
 
+var modificationConfig = Object.assign({}, config, {
+  name: "modification",
+  entry: "./src/page/compte/modification.js",
+  output: {
+    path: path.resolve(__dirname, 'public/js'),
+    filename: "modification.bundle.js"
+  },
+});
+
+var partageConfig = Object.assign({}, config, {
+  name: "partage",
+  entry: "./src/page/article/partage.js",
+  output: {
+    path: path.resolve(__dirname, 'public/js'),
+    filename: "partage.bundle.js"
+  },
+});
+
 
 // Return Array of Configurations
 module.exports = [
-  signInConfig, signUpConfig, homeConfig, compteConfig, createConfig
+  signInConfig, signUpConfig, homeConfig, compteConfig, createConfig, modificationConfig, partageConfig
 ];

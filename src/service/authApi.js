@@ -1,7 +1,7 @@
 import jwtDecode from "jwt-decode";
+const token = localStorage.getItem("token");
 
 function isAuth() {
-    const token = localStorage.getItem("token");
     try {
         jwtDecode(token)
         return true
@@ -9,6 +9,31 @@ function isAuth() {
         console.log(e.message)
         return false
     }
+}
+
+function logout() {
+    window.localStorage.removeItem("token");
+    window.location.replace("sign-in.html");
+}
+
+function deleteUserById(e) {
+    e.preventDefault();
+    return fetch('http://localhost:3000/users/'+jwtDecode(token).userId, {
+        method: "DELETE",
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": "Bearer " + token 
+        }
+    })
+    .then(response => response.json())
+    .then(response => {
+        console.log(response)
+        logout()
+        return response
+    }).catch(function(error) {
+        console.log(error.response);
+        document.body.innerHTML = '<h1 style="color:red">une erreur est survenue sur le serveur</h1>'
+    });
 }
 
 function signUp(signUp) {
@@ -45,25 +70,32 @@ function login(contact) {
     });
 }
 
-function deleteUserById(id) {
-    return fetch('http://localhost:3000/users/'+id, {
-        method: "DELETE",
-        headers: {"Content-type": "application/json; charset=UTF-8"}
+function putUserById(data) {
+    return fetch('http://localhost:3000/users/'+jwtDecode(token).userId, {
+        method: "PUT",
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": "Bearer " + token 
+        },
+        body: JSON.stringify(data),
     })
-    .then(response => response.json())
-    .then(response => {
-        console.log(response)
-        return response
-    }).catch(function(error) {
+    .then(response =>  {
+        response.json()
+        window.location.replace("compte.html");
+    })
+    .catch(function(error) {
         console.log(error.response);
         document.body.innerHTML = '<h1 style="color:red">une erreur est survenue sur le serveur</h1>'
     });
 }
 
-function putUserById(id) {
-    return fetch('http://localhost:3000/users/'+id, {
-        method: "PUT",
-        headers: {"Content-type": "application/json; charset=UTF-8"}
+function getUserById() {
+    return fetch('http://localhost:3000/users/'+jwtDecode(token).userId, {
+        method: "GET",
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": "Bearer " + token 
+        }
     })
     .then(response => response.json())
     .catch(function(error) {
@@ -78,5 +110,7 @@ export default {
     login,
     signUp,
     deleteUserById,
-    putUserById
+    putUserById,
+    logout,
+    getUserById
 }
