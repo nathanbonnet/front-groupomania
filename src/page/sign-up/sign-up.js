@@ -3,8 +3,8 @@ import "../../scss/style.scss";
 import authApi, { isAuth } from "../../service/authApi";
 
   document.addEventListener("DOMContentLoaded", function() {
-    let button = document.getElementById("register");
-    button.addEventListener("click", function(){
+    const button = document.getElementById("register");
+    button.addEventListener("click", () => {
   
       let firstName = document.getElementById("firstName");
       let lastName = document.getElementById("lastName");

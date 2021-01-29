@@ -14,6 +14,7 @@ function getArticles() {
         document.body.innerHTML = '<h1 style="color:red">une erreur est survenue sur le serveur</h1>'
     });
 }
+
 function getArticlesByOwner() {
     return fetch('http://localhost:3000/my_articles', {
         method: "GET",
@@ -103,5 +104,5 @@ export default {
     getArticleById,
     putArticleById,
     postArticle,
-    getArticlesByOwner
+    getArticlesByOwner,
 }

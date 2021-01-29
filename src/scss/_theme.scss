@@ -37,7 +37,6 @@ h2 {
   flex-direction: column; 
   justify-content: center;
   width: 100%;
-  min-height: 100%;
   padding: 20px;
 }
 
@@ -308,4 +307,23 @@ input[type=text]:placeholder {
 .supprimer {
   position: absolute;
   right: 0;
+}
+
+.deconnexion {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+@media screen and (max-width: 992px) {
+  .collapse:not(.show) {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .deconnexion {
+    position: relative;
+  }
 }

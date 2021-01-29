@@ -3,15 +3,27 @@ import "../../scss/style.scss";
 import articleApi from '../../service/articleApi';
 import authApi from "../../service/authApi";
 import sharingApi from '../../service/sharingApi';
+import moment from "moment";
+import jwtDecode from 'jwt-decode';
+
+const handleDelete = async (id) => {
+  await articleApi.deleteArticleById(id);
+  await renderArticles();
+}
 
 const renderArticles = async () => {
   let articles = [];
   articles = await articleApi.getArticles();
 
+  
+  const token = localStorage.getItem("token");
+  const {userId, isAdmin} = jwtDecode(token);
+
   for (const [key, article] of Object.entries(articles)) {
+    console.log(article.date);
     const Line = `
-      <div data-id="${article.id}" class="card article-card text-center">
-      <div class="suppression-admin"></supprimer>
+      <div class="card article-card text-center">
+        ${isAdmin || userId === article.users_id ? '<button data-target-id="'+ article.id +'" class="suppression-admin btn btn-danger">supprimer</button>' : ''}
         <div id="author" class="card-header">
           ${article.firstName} ${article.lastName}
         </div>
@@ -25,13 +37,16 @@ const renderArticles = async () => {
           <a href="sharing.html?articleId=${article.id}" class="btn btn-partager btn-primary">Partager</a>
         </div>
         <div class="card-footer text-muted">
-          ${article.date}
+          ${moment(article.date).format("DD/MM/YYYY, HH:mm")}
         </div>
         <div class="sharings"></div>
       </div>
     `
     document.getElementById("content-article").innerHTML += Line;
   }
+  [].forEach.call(document.querySelectorAll(".suppression-admin"), function(el) {
+    el.addEventListener('click', () => handleDelete(el.dataset.targetId))
+  });
 }
 
 const renderSharings = async () => {
@@ -71,18 +86,4 @@ document.addEventListener("DOMContentLoaded", async function() {
     deconnexion.addEventListener("click", authApi.logout);
     await renderArticles();
     await renderSharings();
-
-
-    // function articleId() {
-    //     let Line = `
-    //     <div class="card-body">
-    //         <textarea name="le contenu" placeholder="contenu de l'article" class="form-control" id="content" rows="3"></textarea>
-    //         <span id="error"></span>
-    //       </div>
-    //       <div class="card-footer text-muted">
-    //         <a href="#" id="button" class="btn btn-primary">Partager</a>
-    //       </div>
-    //     `
-    //     document.getElementById("content-article").innerHTML += Line;
-    // }
 })
