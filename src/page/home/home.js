@@ -19,10 +19,12 @@ const renderArticles = async () => {
   const token = localStorage.getItem("token");
   const {userId, isAdmin} = jwtDecode(token);
 
+  const contentArticle = document.getElementById("content-article");
+
+  contentArticle.innerHTML = "";
   for (const [key, article] of Object.entries(articles)) {
-    console.log(article.date);
     const Line = `
-      <div class="card article-card text-center">
+      <div data-id="${article.id}" class="card article-card text-center">
         ${isAdmin || userId === article.users_id ? '<button data-target-id="'+ article.id +'" class="suppression-admin btn btn-danger">supprimer</button>' : ''}
         <div id="author" class="card-header">
           ${article.firstName} ${article.lastName}
@@ -42,18 +44,18 @@ const renderArticles = async () => {
         <div class="sharings"></div>
       </div>
     `
-    document.getElementById("content-article").innerHTML += Line;
+    contentArticle.innerHTML += Line;
   }
   [].forEach.call(document.querySelectorAll(".suppression-admin"), function(el) {
     el.addEventListener('click', () => handleDelete(el.dataset.targetId))
   });
+  await renderSharings();
 }
 
 const renderSharings = async () => {
   const articles = document.querySelectorAll(".article-card");
   articles.forEach(async function(el) {
     const sharings = await sharingApi.getAllSharingsByArticleId(el.dataset.id)
-    console.log(sharings);
     for (const [key, sharing] of Object.entries(sharings)) {
       const Line = `
         <div data-id="${sharing.id}" class="card article-card text-center">
@@ -85,5 +87,4 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     deconnexion.addEventListener("click", authApi.logout);
     await renderArticles();
-    await renderSharings();
 })
